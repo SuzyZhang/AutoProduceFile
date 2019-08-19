@@ -5,7 +5,7 @@
 '2. Word 模板对应位置，添加 DocVariable 域，设置的域名必须和配置表一致
 '3. Word 域的使用方法，请查阅 https://support.office.com/en-us/article/insert-edit-and-view-fields-in-word-c429bbb0-8669-48a7-bd24-bab6ba6b06bb?ui=en-US&rs=en-US&ad=US
 '4. 模板路径，是相对路径写法
-'5. 操作方法：确定要打印的行-->选择该行的任意单元格-->运行宏 
+'5. 操作方法：确定要打印的行-->选择该行的任意单元格-->运行宏
 '6. 运行宏前，不要打开 Word 模板！否则，程序报错！
 '
 '
@@ -18,7 +18,7 @@ Sub Main()
 
 '================================================================
 
-    confSheetName = "邀请函_配置"     '  在此处修改配置表
+    confSheetName = "信封_配置"     '  在此处修改配置表
     dataSheetName = "参会方信息"    '  在此处修改数据源表
     
 '================================================================
@@ -161,7 +161,14 @@ Public Function AutoProduceFile(ByRef doc As Word.Document, ByVal dict As Dictio
     Next
     
 '  更新域
+'  文本框的域，要单独更新
     doc.Fields.Update
+    
+    For Each sp In doc.Shapes
+        If sp.Type = msoTextBox Then
+            sp.TextFrame.TextRange.Fields.Update
+        End If
+    Next
          
     Application.ScreenUpdating = True
 
